@@ -68,13 +68,16 @@ async function analyzeSingleTextWithBackend() {
     }
 
     try {
-        const response = await fetch("https://tonalnost.onrender.com/analyze", {
+        // Вызываем правильный эндпоинт /analyze_text
+        const response = await fetch("https://tonalnost.onrender.com/analyze_text", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ text })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text })   // JSON с полем text
         });
+
         const data = await response.json();
 
+        // Формируем массив currentResults в формате фронта
         currentResults = [{
             text: data.comment,
             sentiment: data.sentiment_class,
@@ -91,6 +94,7 @@ async function analyzeSingleTextWithBackend() {
         showQuickResult(`Ошибка анализа: ${error.message}`, 'error');
     }
 }
+
 
 // === Анализ CSV файла через бекенд ===
 async function analyzeFileWithBackend() {
