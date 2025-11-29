@@ -69,7 +69,7 @@ async function analyzeSingleTextWithBackend() {
 
     try {
         // Вызываем правильный эндпоинт /analyze_text
-        const response = await fetch("https://tonalnost.onrender.com/analyze_text", {
+        const response = await fetch("http://127.0.0.1:8000/analyze_text", { //fetch("https://tonalnost.onrender.com/analyze_text"
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text })   // JSON с полем text
@@ -118,7 +118,7 @@ async function analyzeFileWithBackend() {
             return;
         }
 
-        const response = await fetch("https://tonalnost.onrender.com/analyze", {
+        const response = await fetch("http://127.0.0.1:8000/analyze_text", { //fetch("https://tonalnost.onrender.com/analyze_text"
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ comments })
