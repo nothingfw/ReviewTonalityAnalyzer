@@ -68,7 +68,7 @@ async function analyzeSingleTextWithBackend() {
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/analyze_text", {
+        const response = await fetch("https://tonalnost.onrender.com/analyze", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ text })
@@ -114,7 +114,7 @@ async function analyzeFileWithBackend() {
             return;
         }
 
-        const response = await fetch("http://127.0.0.1:8000/analyze", {
+        const response = await fetch("https://tonalnost.onrender.com/analyze", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ comments })
