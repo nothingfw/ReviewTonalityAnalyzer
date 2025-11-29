@@ -75,7 +75,7 @@ async function analyzeSingleTextWithBackend() {
         const data = await response.json();
 
         // Привязываем текстовую метку к числовому классу
-        const labelMap = ['Negative', 'Neutral', 'Positive'];
+        const labelMap = ['Neutral', 'Positive', 'Negative'];
 
         currentResults = [{
             text: data.comment,
