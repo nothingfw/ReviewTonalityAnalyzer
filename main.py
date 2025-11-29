@@ -47,7 +47,7 @@ def analyze_sentiment(text: str):
     else:
         sentiment_label = "нейтральная"
 
-    return "1", 1, 1
+    return "1", 1, 1.0
 
 @app.post("/analyze", response_model=List[SentimentResponse])
 def analyze_comments(request: CommentRequest):
@@ -77,3 +77,4 @@ def analyze_text(request: dict):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
+
