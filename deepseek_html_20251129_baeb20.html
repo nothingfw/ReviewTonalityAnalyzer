@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализатор тональности текстов</title>
+    <link rel="stylesheet" href="deepseek_css_20251129_ecdf10.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Анализатор эмоциональной тональности</h1>
+            <p class="subtitle">Классификация текстов: 0-нейтральная, 1-положительная, 2-негативная</p>
+        </header>
+
+        <div class="main-functions">
+            <div class="function-card">
+                <h2>📤 Анализ CSV файла</h2>
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".csv" class="file-input">
+                    <div class="upload-placeholder">
+                        <span>📁 Перетащите CSV файл или кликните для выбора</span>
+                        <small>Файл должен содержать колонку "text" с текстами для анализа</small>
+                    </div>
+                </div>
+                <button id="analyzeBtn" class="btn primary">🔍 Анализировать файл</button>
+                <div id="fileAnalysisStatus"></div>
+            </div>
+
+            <div class="function-card">
+                <h2>📊 Оценка модели (Macro-F1)</h2>
+                <div class="upload-area" id="evalUploadArea">
+                    <input type="file" id="evalFileInput" accept=".csv" class="file-input">
+                    <div class="upload-placeholder">
+                        <span>📁 Загрузите валидационную выборку</span>
+                        <small>Файл должен содержать колонки "text" и "label" (0,1,2)</small>
+                    </div>
+                </div>
+                <button id="evaluateBtn" class="btn secondary">📈 Вычислить Macro-F1</button>
+                <div id="evaluationResults"></div>
+            </div>
+
+            <div class="function-card">
+                <h2>⚡ Быстрый анализ текста</h2>
+                <textarea id="singleText" placeholder="Введите текст для анализа..." rows="4"></textarea>
+                <button id="quickAnalyzeBtn" class="btn tertiary">🎯 Анализировать текст</button>
+                <div id="quickAnalysisResult"></div>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <h2>📋 Результаты анализа</h2>
+            
+            <div class="stats-grid" id="statsGrid"></div>
+            
+            <div class="table-container">
+                <div id="resultsTable"></div>
+            </div>
+
+            <div class="visualizations">
+                <h3>📊 Визуализация результатов</h3>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="confidenceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="download-section">
+                <h3>💾 Скачать результаты</h3>
+                <div class="download-buttons">
+                    <button id="downloadCsvBtn" class="btn success">📥 Скачать CSV</button>
+                    <button id="downloadJsonBtn" class="btn success">📥 Скачать JSON</button>
+                    <button id="downloadReportBtn" class="btn info">📄 Скачать отчет</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="evaluation-section" id="evaluationSection" style="display: none;">
+            <h2>🎯 Результаты оценки модели</h2>
+            <div id="evaluationDetails"></div>
+        </div>
+
+        <div class="format-examples">
+            <div class="format-card">
+                <h3>📝 Формат файла для анализа</h3>
+                <pre><code>text
+"Отличный товар, быстрая доставка"
+"Нормальный продукт, соответствует описанию"
+"Ужасное качество, не рекомендую"
+"Все понравилось, спасибо!"</code></pre>
+            </div>
+            
+            <div class="format-card">
+                <h3>📋 Формат валидационной выборки</h3>
+                <pre><code>text,label,src
+"Отличный товар, быстрая доставка",1,rureviews
+"Нормальный продукт, соответствует описанию",0,rureviews  
+"Ужасное качество, не рекомендую",2,rureviews
+"Все понравилось, спасибо!",1,rureviews</code></pre>
+                <p class="format-note">Метки: 0-нейтральная, 1-положительная, 2-негативная</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="deepseek_javascript_20251129_6e2499.js"></script>
+</body>
+</html>
