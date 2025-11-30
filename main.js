@@ -47,7 +47,7 @@ async function analyzeSingleTextWithBackend() {
     const text = document.getElementById('singleText').value.trim();
     if (!text) { showQuickResult('Введите текст', 'error'); return; }
     try {
-        const res = await fetch("/analyze_text", {
+        const res = await fetch("/api/analyze_text", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text })
@@ -86,7 +86,7 @@ async function analyzeFileWithBackend() {
             const comments = results.data.map(d => d.text || '');
 
             try {
-                const res = await fetch("/analyze", {
+                const res = await fetch("/api/analyze", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ comments })
@@ -132,7 +132,7 @@ async function handleEvalFile(e) {
             const comments = evalData.map(d => d.text);
 
             try {
-                const res = await fetch("https://tonalnost.onrender.com/analyze_text_batch", {
+                const res = await fetch("/api/analyze_text_batch", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ comments })
@@ -150,7 +150,7 @@ async function handleEvalFile(e) {
 }
 
 async function computeMacroF1Backend(y_true, y_pred) {
-    const res = await fetch("http://127.0.0.1:8000/macro_f1", {
+    const res = await fetch("/api/macro_f1", {
         method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ y_true, y_pred })
     });
     const data = await res.json();
