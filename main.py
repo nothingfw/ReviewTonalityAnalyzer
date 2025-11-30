@@ -6,7 +6,6 @@ import re
 import torch
 import torch.nn as nn
 import json
-from sklearn.metrics import f1_score
 
 # ======================================
 # FastAPI
@@ -112,12 +111,11 @@ model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
 model.eval()
 
 LABEL_MAP = {0: "нейтральная", 1: "положительная", 2: "негативная"}
+BATCH_SIZE = 256
 
 # ======================================
 # Анализ батчем
 # ======================================
-BATCH_SIZE = 256  # размер батча, можно увеличить на GPU
-
 def analyze_sentiments_batch(texts: List[str]):
     all_ids = []
     all_segments = []
@@ -128,7 +126,6 @@ def analyze_sentiments_batch(texts: List[str]):
             all_segments.append(seg)
             all_ids.append(idx)
 
-    # Разбиваем на батчи
     results = []
     for i in range(0, len(all_segments), BATCH_SIZE):
         batch = all_segments[i:i+BATCH_SIZE]
@@ -171,14 +168,28 @@ def analyze_text_batch(request: dict):
     comments = request.get("comments", [])
     return analyze_sentiments_batch(comments)
 
+# ======================================
+# Macro-F1 без scikit-learn
+# ======================================
 @app.post("/macro_f1")
 def macro_f1_endpoint(request: dict):
     y_true = request.get("y_true", [])
     y_pred = request.get("y_pred", [])
+
     if len(y_true) != len(y_pred):
         return {"error": "Length mismatch"}
-    f1 = f1_score(y_true, y_pred, average='macro')
-    return {"f1": f1}
+
+    labels = set(y_true) | set(y_pred)
+    f1_sum = 0
+    for l in labels:
+        tp = sum(yt==l and yp==l for yt, yp in zip(y_true, y_pred))
+        fp = sum(yt!=l and yp==l for yt, yp in zip(y_true, y_pred))
+        fn = sum(yt==l and yp!=l for yt, yp in zip(y_true, y_pred))
+        precision = tp / (tp + fp + 1e-8)
+        recall = tp / (tp + fn + 1e-8)
+        f1_sum += 2*precision*recall/(precision+recall+1e-8)
+    macro_f1_value = f1_sum / len(labels)
+    return {"f1": macro_f1_value}
 
 # ======================================
 # Запуск
