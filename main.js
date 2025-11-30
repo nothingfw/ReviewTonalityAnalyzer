@@ -47,7 +47,7 @@ async function analyzeSingleTextWithBackend() {
     const text = document.getElementById('singleText').value.trim();
     if (!text) { showQuickResult('Введите текст', 'error'); return; }
     try {
-        const res = await fetch("https://tonalnost.onrender.com/analyze_text", {
+        const res = await fetch("/analyze_text", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text })
@@ -86,7 +86,7 @@ async function analyzeFileWithBackend() {
             const comments = results.data.map(d => d.text || '');
 
             try {
-                const res = await fetch("http://127.0.0.1:8000/analyze", {
+                const res = await fetch("/analyze", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ comments })
